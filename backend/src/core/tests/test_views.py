@@ -4,17 +4,22 @@ import pytest
 from django.urls import reverse
 
 
+@pytest.fixture
+def books_url():
+    return reverse("books")
+
+
 @pytest.mark.django_db
-def test_get_books_no_records(client):
-    response = client.get(reverse("books"))
+def test_get_books_no_records(client, books_url):
+    response = client.get(books_url)
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {"data": []}
 
 
 @pytest.mark.usefixtures("books")
-def test_get_books_no_reviews(client):
-    response = client.get(reverse("books"))
+def test_get_books_no_reviews(client, books_url):
+    response = client.get(books_url)
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
@@ -59,8 +64,8 @@ def test_get_books_no_reviews(client):
 
 
 @pytest.mark.usefixtures("books", "reviews")
-def test_get_books_filtered_records(client):
-    response = client.get(reverse("books"), {"title": "ryzyko"})
+def test_get_books_filtered_records(client, books_url):
+    response = client.get(books_url, {"title": "ryzyko"})
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
@@ -77,8 +82,8 @@ def test_get_books_filtered_records(client):
 
 
 @pytest.mark.usefixtures("books", "reviews")
-def test_get_books_all_records(client):
-    response = client.get(reverse("books"))
+def test_get_books_all_records(client, books_url):
+    response = client.get(books_url)
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {

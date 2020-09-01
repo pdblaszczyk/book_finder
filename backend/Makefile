@@ -4,4 +4,4 @@ lint:
 run:
 	python src/manage.py runserver
 test:
-	pytest
+	pytest src

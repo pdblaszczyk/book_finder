@@ -4,6 +4,6 @@ init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.app
 ignore-patterns=.*settings.py
 
 [MESSAGES CONTROL]
-disable=missing-docstring,too-few-public-methods
+disable=missing-docstring,redefined-outer-name,too-few-public-methods
 good-names=db
 max-line-length=100
