@@ -24,58 +24,26 @@ def test_get_books_no_reviews(client, books_url):
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         "data": [
-            {
-                "ISBN": "9788366436572",
-                "author": "Alicja Sinicka",
-                "genre": "Kryminał",
-                "reviews": [],
-                "title": "Stażystka",
-            },
-            {
-                "ISBN": "9788381257978",
-                "author": "Harlan Coben",
-                "genre": "Kryminał",
-                "reviews": [],
-                "title": "W głębi lasu",
-            },
-            {
-                "ISBN": "9788366553798",
-                "author": "Remigiusz Mróz",
-                "genre": "Kryminał",
-                "reviews": [],
-                "title": "Osiedle RZNiW",
-            },
-            {
-                "ISBN": "9788380087583",
-                "author": "Suzanne Collins",
-                "genre": "Literatura młodzieżowa",
-                "reviews": [],
-                "title": "Ballada ptaków i węży",
-            },
-            {
-                "ISBN": "9788381783392",
-                "author": "Anna Wolf",
-                "genre": "Literatura obyczajowa",
-                "reviews": [],
-                "title": "Ryzyko gangstera",
-            },
+            {"title": "Stażystka", "author": "Alicja Sinicka", "avg_rate": None},
+            {"title": "Ryzyko gangstera", "author": "Anna Wolf", "avg_rate": None},
+            {"title": "W głębi lasu", "author": "Harlan Coben", "avg_rate": None},
+            {"title": "Osiedle RZNiW", "author": "Remigiusz Mróz", "avg_rate": None},
+            {"title": "Ballada ptaków i węży", "author": "Suzanne Collins", "avg_rate": None},
         ]
     }
 
 
 @pytest.mark.usefixtures("books", "reviews")
 def test_get_books_filtered_records(client, books_url):
-    response = client.get(books_url, {"title": "ryzyko"})
+    response = client.get(books_url, {"title": "gangster"})
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         "data": [
             {
-                "ISBN": "9788381783392",
                 "author": "Anna Wolf",
-                "genre": "Literatura obyczajowa",
-                "reviews": [{"comment": "test", "rate": 5}, {"comment": "test2", "rate": 5}],
                 "title": "Ryzyko gangstera",
+                "avg_rate": 5.0,
             },
         ]
     }
@@ -88,49 +56,10 @@ def test_get_books_all_records(client, books_url):
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         "data": [
-            {
-                "ISBN": "9788366436572",
-                "author": "Alicja Sinicka",
-                "genre": "Kryminał",
-                "reviews": [
-                    {"comment": "test1", "rate": 4},
-                    {"comment": "test2", "rate": 3},
-                    {"comment": "Test3", "rate": 4},
-                    {"comment": "test4", "rate": 2},
-                ],
-                "title": "Stażystka",
-            },
-            {
-                "ISBN": "9788381257978",
-                "author": "Harlan Coben",
-                "genre": "Kryminał",
-                "reviews": [{"comment": "Test1", "rate": 5}, {"comment": "Test2", "rate": 4}],
-                "title": "W głębi lasu",
-            },
-            {
-                "ISBN": "9788366553798",
-                "author": "Remigiusz Mróz",
-                "genre": "Kryminał",
-                "reviews": [],
-                "title": "Osiedle RZNiW",
-            },
-            {
-                "ISBN": "9788380087583",
-                "author": "Suzanne Collins",
-                "genre": "Literatura młodzieżowa",
-                "reviews": [
-                    {"comment": "test1", "rate": 3},
-                    {"comment": "test2", "rate": 3},
-                    {"comment": "test3", "rate": 4},
-                ],
-                "title": "Ballada ptaków i węży",
-            },
-            {
-                "ISBN": "9788381783392",
-                "author": "Anna Wolf",
-                "genre": "Literatura obyczajowa",
-                "reviews": [{"comment": "test", "rate": 5}, {"comment": "test2", "rate": 5}],
-                "title": "Ryzyko gangstera",
-            },
+            {"title": "Stażystka", "author": "Alicja Sinicka", "avg_rate": 3.25},
+            {"title": "Ryzyko gangstera", "author": "Anna Wolf", "avg_rate": 5.0},
+            {"title": "W głębi lasu", "author": "Harlan Coben", "avg_rate": 4.5},
+            {"title": "Osiedle RZNiW", "author": "Remigiusz Mróz", "avg_rate": None},
+            {"title": "Ballada ptaków i węży", "author": "Suzanne Collins", "avg_rate": 3.33},
         ]
     }
